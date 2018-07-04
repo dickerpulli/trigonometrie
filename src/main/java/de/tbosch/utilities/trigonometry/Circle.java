@@ -58,10 +58,10 @@ public class Circle {
 		if (sqrLength >= sqrRadius) {
 			float ratio = 1 / sqrLength;
 			float dist = (float) Math.sqrt(Math.abs(sqrLength - sqrRadius));
-			long x0 = Math.round(middlePoint.getX() + radius * (radius * vector.getX() - vector.getY() * dist) * ratio);
-			long y0 = Math.round(middlePoint.getY() + radius * (radius * vector.getY() + vector.getX() * dist) * ratio);
-			long x1 = Math.round(middlePoint.getX() + radius * (radius * vector.getX() + vector.getY() * dist) * ratio);
-			long y1 = Math.round(middlePoint.getY() + radius * (radius * vector.getY() - vector.getX() * dist) * ratio);
+			int x0 = Math.round(middlePoint.getX() + radius * (radius * vector.getX() - vector.getY() * dist) * ratio);
+			int y0 = Math.round(middlePoint.getY() + radius * (radius * vector.getY() + vector.getX() * dist) * ratio);
+			int x1 = Math.round(middlePoint.getX() + radius * (radius * vector.getX() + vector.getY() * dist) * ratio);
+			int y1 = Math.round(middlePoint.getY() + radius * (radius * vector.getY() - vector.getX() * dist) * ratio);
 
 			return new Point[] { new Point(x0, y0), new Point(x1, y1) };
 		} else {
@@ -96,13 +96,11 @@ public class Circle {
 				diffCircleTangentPoints = diffCircle.getTangentPoints(middlePoint2);
 				middlepointLeft = middlePoint2;
 				radiusLeft = radius2;
-				middlepointRight = middlePoint;
 			} else if (radius < radius2) {
 				Circle diffCircle = new Circle(middlePoint2, (radius2 - radius));
 				diffCircleTangentPoints = diffCircle.getTangentPoints(middlePoint);
 				middlepointLeft = middlePoint;
 				radiusLeft = radius;
-				middlepointRight = middlePoint2;
 			} else {
 				middlepointLeft = middlePoint;
 				radiusLeft = radius;
@@ -117,8 +115,8 @@ public class Circle {
 					diffCircleTangentPoints[0].getY() - middlepointLeft.getY());
 			float v2Length = (float) Math.sqrt(Math.pow(vector2.getX(), 2) + Math.pow(vector2.getY(), 2));
 
-			long tangent1_x0, tangent1_y0, tangent1_x1, tangent1_y1;
-			long tangent2_x0, tangent2_y0, tangent2_x1, tangent2_y1;
+			int tangent1_x0, tangent1_y0, tangent1_x1, tangent1_y1;
+			int tangent2_x0, tangent2_y0, tangent2_x1, tangent2_y1;
 			if (otherDir) {
 				tangent2_x1 = Math.round(middlepointLeft.getX() - vector1.getY() * radiusLeft / v1Length);
 				tangent2_y1 = Math.round(middlepointLeft.getY() + vector1.getX() * radiusLeft / v1Length);
@@ -189,8 +187,8 @@ public class Circle {
 					diffCircleTangentPoints[0].getY() - middlepointLeft.getY());
 			float v2Length = (float) Math.sqrt(Math.pow(vector2.getX(), 2) + Math.pow(vector2.getY(), 2));
 
-			long tangent1_x0, tangent1_y0, tangent1_x1, tangent1_y1;
-			long tangent2_x0, tangent2_y0, tangent2_x1, tangent2_y1;
+			int tangent1_x0, tangent1_y0, tangent1_x1, tangent1_y1;
+			int tangent2_x0, tangent2_y0, tangent2_x1, tangent2_y1;
 			if (otherDir) {
 				tangent2_x0 = Math.round(middlepointLeft.getX() + vector1.getY() * radiusLeft / v1Length);
 				tangent2_y0 = Math.round(middlepointLeft.getY() - vector1.getX() * radiusLeft / v1Length);
@@ -256,14 +254,39 @@ public class Circle {
 		return radius;
 	}
 
-	/**
-	 * (non-Javadoc)
-	 *
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
 		return "middle point = " + middlePoint + ", radius = " + radius;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((middlePoint == null) ? 0 : middlePoint.hashCode());
+		result = prime * result + Float.floatToIntBits(radius);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Circle other = (Circle) obj;
+		if (middlePoint == null) {
+			if (other.middlePoint != null)
+				return false;
+		} else if (!middlePoint.equals(other.middlePoint))
+			return false;
+		if (Float.floatToIntBits(radius) != Float.floatToIntBits(other.radius))
+			return false;
+		return true;
+	}
+
+
 
 }

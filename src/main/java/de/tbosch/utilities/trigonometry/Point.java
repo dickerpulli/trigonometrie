@@ -3,13 +3,13 @@ package de.tbosch.utilities.trigonometry;
 /**
  * Representation of a point in a coordinate system.
  *
- * @author Thomas Bosch
+ * @author Thomas Bosch (tbosch@gmx.de)
  */
 public class Point {
 
-	private final long x;
+	private final int x;
 
-	private final long y;
+	private final int y;
 
 	/**
 	 * Constructs the point.
@@ -19,7 +19,7 @@ public class Point {
 	 * @param y
 	 *            The y coordinate.
 	 */
-	public Point(long x, long y) {
+	public Point(int x, int y) {
 		this.x = x;
 		this.y = y;
 	}
@@ -27,14 +27,14 @@ public class Point {
 	/**
 	 * @return The x coordinate.
 	 */
-	public long getX() {
+	public int getX() {
 		return x;
 	}
 
 	/**
 	 * @return The y coordinate.
 	 */
-	public long getY() {
+	public int getY() {
 		return y;
 	}
 

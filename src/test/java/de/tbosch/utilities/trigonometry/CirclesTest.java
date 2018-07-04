@@ -27,4 +27,12 @@ public class CirclesTest {
 		assertEquals(78.69, Math.toDegrees(angle), 0.0009);
 	}
 
+	@Test
+	public void testGetAngleBetweenCircles2() {
+		Circle circle1 = new Circle(new Point(100, 100), 10);
+		Circle circle2 = new Circle(new Point(50, 50), 10);
+		double angle = Circles.getAngleBetweenCircles(circle1, circle2);
+		assertEquals(45.00, Math.toDegrees(angle), 0.0009);
+	}
+
 }
