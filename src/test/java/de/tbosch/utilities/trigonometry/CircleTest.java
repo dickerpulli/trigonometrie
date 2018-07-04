@@ -1,7 +1,9 @@
 package de.tbosch.utilities.trigonometry;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -60,6 +62,20 @@ public class CircleTest {
 			Circle circle2 = new Circle(middlepoint, radius - 1);
 			circle.getTangentPoints(circle2);
 		});
+	}
+
+	@Test
+	public void testIsInside() throws Exception {
+		float radius = 100;
+		Point middlepoint = new Point(100, 100);
+		Circle circle = new Circle(middlepoint, radius);
+		assertTrue(circle.isInside(middlepoint));
+
+		assertFalse(circle.isInside(new Point(0, 100)));
+		assertFalse(circle.isInside(new Point(100, 0)));
+		assertTrue(circle.isInside(new Point(1, 100)));
+		assertTrue(circle.isInside(new Point(100, 1)));
+		assertFalse(circle.isInside(new Point(0, 0)));
 	}
 
 }
