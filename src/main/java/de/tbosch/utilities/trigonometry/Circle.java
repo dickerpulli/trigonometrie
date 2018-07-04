@@ -1,9 +1,8 @@
 package de.tbosch.utilities.trigonometry;
 
-import java.awt.Point;
-
 /**
  * A normal circle representation with middle point and radius.
+ *
  * @author Thomas Bosch (tbosch@gmx.de)
  */
 public class Circle {
@@ -14,8 +13,11 @@ public class Circle {
 
 	/**
 	 * Constructs the circle.
-	 * @param middlePoint The middle point of the circle
-	 * @param radius The radius of the circle
+	 *
+	 * @param middlePoint
+	 *            The middle point of the circle
+	 * @param radius
+	 *            The radius of the circle
 	 */
 	public Circle(Point middlePoint, float radius) {
 		this.middlePoint = middlePoint;
@@ -24,6 +26,7 @@ public class Circle {
 
 	/**
 	 * Gets the points that build a circle.
+	 *
 	 * @return All 360 points (each single full degree)
 	 */
 	public Point[] getCirclePoints() {
@@ -33,56 +36,54 @@ public class Circle {
 			double rads = i * Math.PI / 180.00;
 			double x = Math.cos(rads) * radius;
 			double y = Math.sin(rads) * radius;
-			points[i] = new Point((int) x + middlePoint.x, (int) y + middlePoint.y);
+			points[i] = new Point((int) x + middlePoint.getX(), (int) y + middlePoint.getY());
 		}
 		return points;
 	}
 
 	/**
-	 * Gets the two tangent points. Round up or down to the next integer point coordinate.
-	 * @param point The point laying outside the circle
+	 * Gets the two tangent points. Round up or down to the next integer point
+	 * coordinate.
+	 *
+	 * @param point
+	 *            The point laying outside the circle
 	 * @return The tangent points
-	 * @throws IntersectionException If the point is inside the circle
+	 * @throws IntersectionException
+	 *             If the point is inside the circle
 	 */
 	public Point[] getTangentPoints(Point point) {
-		Point[] pArray = new Point[2];
-		pArray[0] = new Point();
-		pArray[1] = new Point();
-
-		Point vector = new Point(point.x - middlePoint.x, point.y - middlePoint.y);
-		float sqrLength = (float) Math.pow(vector.x, 2) + (float) Math.pow(vector.y, 2);
+		Point vector = new Point(point.getX() - middlePoint.getX(), point.getY() - middlePoint.getY());
+		float sqrLength = (float) Math.pow(vector.getX(), 2) + (float) Math.pow(vector.getY(), 2);
 		float sqrRadius = (float) Math.pow(radius, 2);
 		if (sqrLength >= sqrRadius) {
 			float ratio = 1 / sqrLength;
 			float dist = (float) Math.sqrt(Math.abs(sqrLength - sqrRadius));
-			pArray[0].x = Math.round(middlePoint.x + radius * (radius * vector.x - vector.y * dist) * ratio);
-			pArray[0].y = Math.round(middlePoint.y + radius * (radius * vector.y + vector.x * dist) * ratio);
-			pArray[1].x = Math.round(middlePoint.x + radius * (radius * vector.x + vector.y * dist) * ratio);
-			pArray[1].y = Math.round(middlePoint.y + radius * (radius * vector.y - vector.x * dist) * ratio);
+			long x0 = Math.round(middlePoint.getX() + radius * (radius * vector.getX() - vector.getY() * dist) * ratio);
+			long y0 = Math.round(middlePoint.getY() + radius * (radius * vector.getY() + vector.getX() * dist) * ratio);
+			long x1 = Math.round(middlePoint.getX() + radius * (radius * vector.getX() + vector.getY() * dist) * ratio);
+			long y1 = Math.round(middlePoint.getY() + radius * (radius * vector.getY() - vector.getX() * dist) * ratio);
+
+			return new Point[] { new Point(x0, y0), new Point(x1, y1) };
 		} else {
 			throw new IntersectionException("the point " + point + " is inside the circle: " + this);
 		}
-
-		return pArray;
 	}
 
 	/**
 	 * Gets the tangent points of the outer common tangent lines of two circles.
-	 * @param circle The second circle
-	 * @return The tangent points of the common tangent lines. The first dimension are tangent lines and the second dimension are the points that build each
-	 *         tangent line.
-	 * @throws IntersectionException If the given circle is fully inside this circle
+	 *
+	 * @param circle
+	 *            The second circle
+	 * @return The tangent points of the common tangent lines. The first dimension
+	 *         are tangent lines and the second dimension are the points that build
+	 *         each tangent line.
+	 * @throws IntersectionException
+	 *             If the given circle is fully inside this circle
 	 */
 	public Point[][] getOuterTangentPoints(Circle circle) {
-		Point[] tangent1 = new Point[2];
-		Point[] tangent2 = new Point[2];
-		tangent1[0] = new Point();
-		tangent1[1] = new Point();
-		tangent2[0] = new Point();
-		tangent2[1] = new Point();
-
 		Point[] diffCircleTangentPoints = new Point[2];
-		Point middlepointLeft, middlepointRight;
+		Point middlepointLeft;
+		Point middlepointRight;
 		float radiusLeft;
 		boolean otherDir = false;
 
@@ -109,54 +110,59 @@ public class Circle {
 				diffCircleTangentPoints[0] = middlepointRight;
 				diffCircleTangentPoints[1] = middlepointRight;
 			}
-			Point vector1 = new Point(diffCircleTangentPoints[1].x - middlepointLeft.x, diffCircleTangentPoints[1].y - middlepointLeft.y);
-			float v1Length = (float) Math.sqrt(Math.pow(vector1.x, 2) + Math.pow(vector1.y, 2));
-			Point vector2 = new Point(diffCircleTangentPoints[0].x - middlepointLeft.x, diffCircleTangentPoints[0].y - middlepointLeft.y);
-			float v2Length = (float) Math.sqrt(Math.pow(vector2.x, 2) + Math.pow(vector2.y, 2));
+			Point vector1 = new Point(diffCircleTangentPoints[1].getX() - middlepointLeft.getX(),
+					diffCircleTangentPoints[1].getY() - middlepointLeft.getY());
+			float v1Length = (float) Math.sqrt(Math.pow(vector1.getX(), 2) + Math.pow(vector1.getY(), 2));
+			Point vector2 = new Point(diffCircleTangentPoints[0].getX() - middlepointLeft.getX(),
+					diffCircleTangentPoints[0].getY() - middlepointLeft.getY());
+			float v2Length = (float) Math.sqrt(Math.pow(vector2.getX(), 2) + Math.pow(vector2.getY(), 2));
 
+			long tangent1_x0, tangent1_y0, tangent1_x1, tangent1_y1;
+			long tangent2_x0, tangent2_y0, tangent2_x1, tangent2_y1;
 			if (otherDir) {
-				tangent2[1].x = Math.round(middlepointLeft.x - vector1.y * radiusLeft / v1Length);
-				tangent2[1].y = Math.round(middlepointLeft.y + vector1.x * radiusLeft / v1Length);
-				tangent1[1].x = Math.round(diffCircleTangentPoints[1].x - vector1.y * radiusLeft / v1Length);
-				tangent1[1].y = Math.round(diffCircleTangentPoints[1].y + vector1.x * radiusLeft / v1Length);
-				tangent2[0].x = Math.round(middlepointLeft.x + vector2.y * radiusLeft / v2Length);
-				tangent2[0].y = Math.round(middlepointLeft.y - vector2.x * radiusLeft / v2Length);
-				tangent1[0].x = Math.round(diffCircleTangentPoints[0].x + vector2.y * radiusLeft / v2Length);
-				tangent1[0].y = Math.round(diffCircleTangentPoints[0].y - vector2.x * radiusLeft / v2Length);
+				tangent2_x1 = Math.round(middlepointLeft.getX() - vector1.getY() * radiusLeft / v1Length);
+				tangent2_y1 = Math.round(middlepointLeft.getY() + vector1.getX() * radiusLeft / v1Length);
+				tangent1_x1 = Math.round(diffCircleTangentPoints[1].getX() - vector1.getY() * radiusLeft / v1Length);
+				tangent1_y1 = Math.round(diffCircleTangentPoints[1].getY() + vector1.getX() * radiusLeft / v1Length);
+				tangent2_x0 = Math.round(middlepointLeft.getX() + vector2.getY() * radiusLeft / v2Length);
+				tangent2_y0 = Math.round(middlepointLeft.getY() - vector2.getX() * radiusLeft / v2Length);
+				tangent1_x0 = Math.round(diffCircleTangentPoints[0].getX() + vector2.getY() * radiusLeft / v2Length);
+				tangent1_y0 = Math.round(diffCircleTangentPoints[0].getY() - vector2.getX() * radiusLeft / v2Length);
 			} else {
-				tangent1[0].x = Math.round(middlepointLeft.x - vector1.y * radiusLeft / v1Length);
-				tangent1[0].y = Math.round(middlepointLeft.y + vector1.x * radiusLeft / v1Length);
-				tangent2[0].x = Math.round(diffCircleTangentPoints[1].x - vector1.y * radiusLeft / v1Length);
-				tangent2[0].y = Math.round(diffCircleTangentPoints[1].y + vector1.x * radiusLeft / v1Length);
-				tangent1[1].x = Math.round(middlepointLeft.x + vector2.y * radiusLeft / v2Length);
-				tangent1[1].y = Math.round(middlepointLeft.y - vector2.x * radiusLeft / v2Length);
-				tangent2[1].x = Math.round(diffCircleTangentPoints[0].x + vector2.y * radiusLeft / v2Length);
-				tangent2[1].y = Math.round(diffCircleTangentPoints[0].y - vector2.x * radiusLeft / v2Length);
+				tangent1_x0 = Math.round(middlepointLeft.getX() - vector1.getY() * radiusLeft / v1Length);
+				tangent1_y0 = Math.round(middlepointLeft.getY() + vector1.getX() * radiusLeft / v1Length);
+				tangent2_x0 = Math.round(diffCircleTangentPoints[1].getX() - vector1.getY() * radiusLeft / v1Length);
+				tangent2_y0 = Math.round(diffCircleTangentPoints[1].getY() + vector1.getX() * radiusLeft / v1Length);
+				tangent1_x1 = Math.round(middlepointLeft.getX() + vector2.getY() * radiusLeft / v2Length);
+				tangent1_y1 = Math.round(middlepointLeft.getY() - vector2.getX() * radiusLeft / v2Length);
+				tangent2_x1 = Math.round(diffCircleTangentPoints[0].getX() + vector2.getY() * radiusLeft / v2Length);
+				tangent2_y1 = Math.round(diffCircleTangentPoints[0].getY() - vector2.getX() * radiusLeft / v2Length);
 			}
+
+			return new Point[][] { //
+					new Point[] { new Point(tangent1_x0, tangent1_y0), new Point(tangent1_x1, tangent1_y1) }, //
+					new Point[] { new Point(tangent2_x0, tangent2_y0), new Point(tangent2_x1, tangent2_y1) }//
+			};
 		} else {
 			throw new IntersectionException("the circle " + circle + " is fully inside the circle: " + this);
 		}
-
-		return new Point[][] { tangent1, tangent2 };
 	}
 
 	/**
-	 * Gets the tangent points of the inner common tangent lines of two circles. The result is a two dimensional array with the tangent lines in the first
+	 * Gets the tangent points of the inner common tangent lines of two circles. The
+	 * result is a two dimensional array with the tangent lines in the first
 	 * dimension and the points of each tangent line.
-	 * @param circle The second circle
-	 * @return The tangent points of the common tangent lines. The first dimension are tangent lines and the second dimension are the points that build each
-	 *         tangent line.
-	 * @throws IntersectionException If the given circle intersects this circle
+	 *
+	 * @param circle
+	 *            The second circle
+	 * @return The tangent points of the common tangent lines. The first dimension
+	 *         are tangent lines and the second dimension are the points that build
+	 *         each tangent line.
+	 * @throws IntersectionException
+	 *             If the given circle intersects this circle
 	 */
 	public Point[][] getInnerTangentPoints(Circle circle) {
-		Point[] tangent1 = new Point[2];
-		Point[] tangent2 = new Point[2];
-		tangent1[0] = new Point();
-		tangent1[1] = new Point();
-		tangent2[0] = new Point();
-		tangent2[1] = new Point();
-
-		Point[] diffCircleTangentPoints = new Point[2];
+		Point[] diffCircleTangentPoints;
 		Point middlepointLeft;
 		float radiusLeft;
 		boolean otherDir = false;
@@ -176,42 +182,53 @@ public class Circle {
 				middlepointLeft = middlePoint;
 				radiusLeft = radius;
 			}
-			Point vector1 = new Point(diffCircleTangentPoints[1].x - middlepointLeft.x, diffCircleTangentPoints[1].y - middlepointLeft.y);
-			float v1Length = (float) Math.sqrt(Math.pow(vector1.x, 2) + Math.pow(vector1.y, 2));
-			Point vector2 = new Point(diffCircleTangentPoints[0].x - middlepointLeft.x, diffCircleTangentPoints[0].y - middlepointLeft.y);
-			float v2Length = (float) Math.sqrt(Math.pow(vector2.x, 2) + Math.pow(vector2.y, 2));
+			Point vector1 = new Point(diffCircleTangentPoints[1].getX() - middlepointLeft.getX(),
+					diffCircleTangentPoints[1].getY() - middlepointLeft.getY());
+			float v1Length = (float) Math.sqrt(Math.pow(vector1.getX(), 2) + Math.pow(vector1.getY(), 2));
+			Point vector2 = new Point(diffCircleTangentPoints[0].getX() - middlepointLeft.getX(),
+					diffCircleTangentPoints[0].getY() - middlepointLeft.getY());
+			float v2Length = (float) Math.sqrt(Math.pow(vector2.getX(), 2) + Math.pow(vector2.getY(), 2));
 
+			long tangent1_x0, tangent1_y0, tangent1_x1, tangent1_y1;
+			long tangent2_x0, tangent2_y0, tangent2_x1, tangent2_y1;
 			if (otherDir) {
-				tangent2[0].x = Math.round(middlepointLeft.x + vector1.y * radiusLeft / v1Length);
-				tangent2[0].y = Math.round(middlepointLeft.y - vector1.x * radiusLeft / v1Length);
-				tangent1[1].x = Math.round(diffCircleTangentPoints[1].x + vector1.y * radiusLeft / v1Length);
-				tangent1[1].y = Math.round(diffCircleTangentPoints[1].y - vector1.x * radiusLeft / v1Length);
-				tangent2[1].x = Math.round(middlepointLeft.x - vector2.y * radiusLeft / v2Length);
-				tangent2[1].y = Math.round(middlepointLeft.y + vector2.x * radiusLeft / v2Length);
-				tangent1[0].x = Math.round(diffCircleTangentPoints[0].x - vector2.y * radiusLeft / v2Length);
-				tangent1[0].y = Math.round(diffCircleTangentPoints[0].y + vector2.x * radiusLeft / v2Length);
+				tangent2_x0 = Math.round(middlepointLeft.getX() + vector1.getY() * radiusLeft / v1Length);
+				tangent2_y0 = Math.round(middlepointLeft.getY() - vector1.getX() * radiusLeft / v1Length);
+				tangent1_x1 = Math.round(diffCircleTangentPoints[1].getX() + vector1.getY() * radiusLeft / v1Length);
+				tangent1_y1 = Math.round(diffCircleTangentPoints[1].getY() - vector1.getX() * radiusLeft / v1Length);
+				tangent2_x1 = Math.round(middlepointLeft.getX() - vector2.getY() * radiusLeft / v2Length);
+				tangent2_y1 = Math.round(middlepointLeft.getY() + vector2.getX() * radiusLeft / v2Length);
+				tangent1_x0 = Math.round(diffCircleTangentPoints[0].getX() - vector2.getY() * radiusLeft / v2Length);
+				tangent1_y0 = Math.round(diffCircleTangentPoints[0].getY() + vector2.getX() * radiusLeft / v2Length);
 			} else {
-				tangent1[1].x = Math.round(middlepointLeft.x + vector1.y * radiusLeft / v1Length);
-				tangent1[1].y = Math.round(middlepointLeft.y - vector1.x * radiusLeft / v1Length);
-				tangent2[0].x = Math.round(diffCircleTangentPoints[1].x + vector1.y * radiusLeft / v1Length);
-				tangent2[0].y = Math.round(diffCircleTangentPoints[1].y - vector1.x * radiusLeft / v1Length);
-				tangent1[0].x = Math.round(middlepointLeft.x - vector2.y * radiusLeft / v2Length);
-				tangent1[0].y = Math.round(middlepointLeft.y + vector2.x * radiusLeft / v2Length);
-				tangent2[1].x = Math.round(diffCircleTangentPoints[0].x - vector2.y * radiusLeft / v2Length);
-				tangent2[1].y = Math.round(diffCircleTangentPoints[0].y + vector2.x * radiusLeft / v2Length);
+				tangent1_x1 = Math.round(middlepointLeft.getX() + vector1.getY() * radiusLeft / v1Length);
+				tangent1_y1 = Math.round(middlepointLeft.getY() - vector1.getX() * radiusLeft / v1Length);
+				tangent2_x0 = Math.round(diffCircleTangentPoints[1].getX() + vector1.getY() * radiusLeft / v1Length);
+				tangent2_y0 = Math.round(diffCircleTangentPoints[1].getY() - vector1.getX() * radiusLeft / v1Length);
+				tangent1_x0 = Math.round(middlepointLeft.getX() - vector2.getY() * radiusLeft / v2Length);
+				tangent1_y0 = Math.round(middlepointLeft.getY() + vector2.getX() * radiusLeft / v2Length);
+				tangent2_x1 = Math.round(diffCircleTangentPoints[0].getX() - vector2.getY() * radiusLeft / v2Length);
+				tangent2_y1 = Math.round(diffCircleTangentPoints[0].getY() + vector2.getX() * radiusLeft / v2Length);
 			}
+
+			return new Point[][] { //
+					new Point[] { new Point(tangent1_x0, tangent1_y0), new Point(tangent1_x1, tangent1_y1) }, //
+					new Point[] { new Point(tangent2_x0, tangent2_y0), new Point(tangent2_x1, tangent2_y1) }//
+			};
 		} else {
 			throw new IntersectionException("the circle " + circle + " intersects the circle: " + this);
 		}
-
-		return new Point[][] { tangent1, tangent2 };
 	}
 
 	/**
 	 * Gets the tangent points of the common inner and outer tangent lines.
-	 * @param circle The second circle
-	 * @return The tangent points array - first the outer tangent lines then the inner ones.
-	 * @throws IntersectionException If the given circle is fully inside this circle.
+	 *
+	 * @param circle
+	 *            The second circle
+	 * @return The tangent points array - first the outer tangent lines then the
+	 *         inner ones.
+	 * @throws IntersectionException
+	 *             If the given circle is fully inside this circle.
 	 */
 	public Point[][] getTangentPoints(Circle circle) {
 		Point[][] outerTangents = getOuterTangentPoints(circle);
@@ -241,11 +258,12 @@ public class Circle {
 
 	/**
 	 * (non-Javadoc)
+	 *
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return "middle point = [" + middlePoint.x + ", " + middlePoint.y + "], radius = " + radius;
+		return "middle point = " + middlePoint + ", radius = " + radius;
 	}
 
 }

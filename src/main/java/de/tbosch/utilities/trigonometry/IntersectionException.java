@@ -1,7 +1,9 @@
 package de.tbosch.utilities.trigonometry;
 
 /**
- * Represents the error that a point or a circle is inside the circle to compare with.
+ * Represents the error that a point or a circle is inside the circle to compare
+ * with.
+ *
  * @author Thomas Bosch (tbosch@gmx.de)
  */
 public class IntersectionException extends IllegalArgumentException {
@@ -10,7 +12,9 @@ public class IntersectionException extends IllegalArgumentException {
 
 	/**
 	 * Contructs a new exception.
-	 * @param msg The message
+	 *
+	 * @param msg
+	 *            The message
 	 */
 	public IntersectionException(String msg) {
 		super(msg);

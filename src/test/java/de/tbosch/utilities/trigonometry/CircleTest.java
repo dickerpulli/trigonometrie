@@ -3,8 +3,6 @@ package de.tbosch.utilities.trigonometry;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.awt.Point;
-
 import org.junit.jupiter.api.Test;
 
 public class CircleTest {
@@ -33,24 +31,24 @@ public class CircleTest {
 		Circle circle = new Circle(middlepoint, radius);
 		Point point = new Point(200, 200);
 		Point[] tangentPoints = circle.getTangentPoints(point);
-		assertEquals(100, tangentPoints[0].x);
-		assertEquals(200, tangentPoints[0].y);
-		assertEquals(200, tangentPoints[1].x);
-		assertEquals(100, tangentPoints[1].y);
+		assertEquals(100, tangentPoints[0].getX());
+		assertEquals(200, tangentPoints[0].getY());
+		assertEquals(200, tangentPoints[1].getX());
+		assertEquals(100, tangentPoints[1].getY());
 
 		point = new Point(200, 100);
 		tangentPoints = circle.getTangentPoints(point);
-		assertEquals(200, tangentPoints[0].x);
-		assertEquals(100, tangentPoints[0].y);
-		assertEquals(200, tangentPoints[1].x);
-		assertEquals(100, tangentPoints[1].y);
+		assertEquals(200, tangentPoints[0].getX());
+		assertEquals(100, tangentPoints[0].getY());
+		assertEquals(200, tangentPoints[1].getX());
+		assertEquals(100, tangentPoints[1].getY());
 
 		point = new Point(-100, -100);
 		tangentPoints = circle.getTangentPoints(point);
-		assertEquals(141, tangentPoints[0].x);
-		assertEquals(9, tangentPoints[0].y);
-		assertEquals(9, tangentPoints[1].x);
-		assertEquals(141, tangentPoints[1].y);
+		assertEquals(141, tangentPoints[0].getX());
+		assertEquals(9, tangentPoints[0].getY());
+		assertEquals(9, tangentPoints[1].getX());
+		assertEquals(141, tangentPoints[1].getY());
 	}
 
 	@Test
