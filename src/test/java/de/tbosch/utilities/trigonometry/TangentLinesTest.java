@@ -1,10 +1,10 @@
 package de.tbosch.utilities.trigonometry;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.awt.Point;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class TangentLinesTest {
 

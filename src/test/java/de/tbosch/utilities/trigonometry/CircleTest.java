@@ -1,10 +1,11 @@
 package de.tbosch.utilities.trigonometry;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.awt.Point;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class CircleTest {
 
@@ -52,13 +53,15 @@ public class CircleTest {
 		assertEquals(141, tangentPoints[1].y);
 	}
 
-	@Test(expected = IntersectionException.class)
+	@Test
 	public void testGetTangentPointsWithCircleException() throws Exception {
-		float radius = 100;
-		Point middlepoint = new Point(100, 100);
-		Circle circle = new Circle(middlepoint, radius);
-		Circle circle2 = new Circle(middlepoint, radius - 1);
-		circle.getTangentPoints(circle2);
+		assertThrows(IntersectionException.class, () -> {
+			float radius = 100;
+			Point middlepoint = new Point(100, 100);
+			Circle circle = new Circle(middlepoint, radius);
+			Circle circle2 = new Circle(middlepoint, radius - 1);
+			circle.getTangentPoints(circle2);
+		});
 	}
 
 }
