@@ -46,9 +46,9 @@ public class Point {
 	 * @return The distance.
 	 */
 	public double distance(Point p) {
-		double px = p.getX() - this.getX();
-		double py = p.getY() - this.getY();
-		return Math.sqrt(px * px + py * py);
+		long px = p.getX() - this.getX();
+		long py = p.getY() - this.getY();
+		return Math.sqrt((double)(px * px) + (double)(py * py));
 	}
 
 	@Override
